@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Hearto — 今夜、近くの熱い女の子と</title>
-  <meta name="description" content="近くの検証済み女の子と今すぐ出会える。無料ダウンロードで最初の無料プレイを楽しもう。">
+  <title>Hearto — 熱い狐と今夜出会う</title>
+  <meta name="description" content="近くの検証済みのセクシーな女の子と今すぐ無料で出会える。最初のプレイは完全無料。">
   <style>
     * {
       margin: 0;
@@ -14,531 +14,681 @@
     }
 
     body {
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Hiragino Sans", "Hiragino Kaku Gothic ProN", Meiryo, sans-serif;
-      background: linear-gradient(180deg, #fff0f5 0%, #ffe4ec 40%, #ffd6e7 100%);
-      color: #1a1a1a;
+      font-family: -apple-system, BlinkMacSystemFont, "Hiragino Sans", "Hiragino Kaku Gothic ProN", "Noto Sans JP", Meiryo, sans-serif;
+      background: linear-gradient(180deg, #ffe6f0 0%, #ffd1e6 50%, #ffb8d9 100%);
       min-height: 100vh;
+      color: #2d1b2e;
       overflow-x: hidden;
-      padding-bottom: 100px;
+      position: relative;
     }
 
-    /* 顶部导航 */
+    /* 浮动爱心 */
+    .hearts {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+      overflow: hidden;
+    }
+    .heart {
+      position: absolute;
+      color: #ff2d77;
+      opacity: 0.2;
+      animation: floatHeart linear infinite;
+    }
+    @keyframes floatHeart {
+      0% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
+      15% { opacity: 0.25; }
+      85% { opacity: 0.15; }
+      100% { transform: translateY(-20vh) rotate(720deg); opacity: 0; }
+    }
+
+    .container {
+      position: relative;
+      z-index: 1;
+      max-width: 520px;
+      margin: 0 auto;
+      padding: 14px 14px 130px;
+    }
+
+    /* Header */
     .header {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 16px 20px;
-      position: sticky;
-      top: 0;
-      z-index: 100;
-      background: rgba(255, 240, 245, 0.85);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
+      margin-bottom: 18px;
     }
-
     .logo {
       display: flex;
       align-items: center;
       gap: 8px;
       font-size: 22px;
       font-weight: 800;
-      color: #ff2d55;
+      color: #ff2d77;
     }
-
     .logo-icon {
-      width: 32px;
-      height: 32px;
-      background: linear-gradient(135deg, #ff2d55, #ff6b9d);
+      width: 34px;
+      height: 34px;
+      background: linear-gradient(135deg, #ff2d77, #ff6b9d);
       border-radius: 50%;
       display: flex;
       align-items: center;
       justify-content: center;
       color: white;
       font-size: 18px;
+      box-shadow: 0 4px 14px rgba(255, 45, 119, 0.45);
     }
-
     .online-badge {
-      background: rgba(255, 255, 255, 0.9);
+      background: rgba(255,255,255,0.95);
+      padding: 6px 13px;
       border-radius: 50px;
-      padding: 6px 14px;
-      font-size: 13px;
+      font-size: 12.5px;
       font-weight: 600;
-      color: #333;
-      box-shadow: 0 2px 10px rgba(255, 45, 85, 0.15);
       display: flex;
       align-items: center;
       gap: 6px;
+      box-shadow: 0 3px 12px rgba(0,0,0,0.08);
     }
-
-    .online-dot {
+    .dot {
       width: 8px;
       height: 8px;
       background: #22c55e;
       border-radius: 50%;
-      animation: pulse 1.5s infinite;
+      animation: pulse 1.4s infinite;
     }
-
     @keyframes pulse {
       0%, 100% { opacity: 1; transform: scale(1); }
-      50% { opacity: 0.6; transform: scale(1.2); }
+      50% { opacity: 0.5; transform: scale(1.3); }
     }
 
-    /* 英雄区域 */
+    /* Hero */
     .hero {
-      padding: 20px 24px 10px;
-      text-align: left;
-    }
-
-    .hero h1 {
-      font-size: 32px;
-      font-weight: 900;
-      line-height: 1.25;
-      margin-bottom: 12px;
-    }
-
-    .hero h1 .pink {
-      color: #ff2d55;
-    }
-
-    .hero p {
-      font-size: 15px;
-      color: #555;
-      line-height: 1.6;
+      text-align: center;
       margin-bottom: 20px;
     }
+    .hero h1 {
+      font-size: 28px;
+      font-weight: 900;
+      line-height: 1.3;
+      margin-bottom: 10px;
+    }
+    .hero h1 .pink { color: #ff2d77; }
+    .hero p {
+      font-size: 14px;
+      color: #5c3a5e;
+      line-height: 1.55;
+      padding: 0 6px;
+    }
 
-    /* 人物卡片滑动区 */
-    .profiles-wrapper {
-      padding: 10px 0 20px;
+    /* ===== 自动滚动卡片区域 ===== */
+    .cards-section {
+      margin: 0 -14px 22px;
       overflow: hidden;
-    }
-
-    .profiles {
-      display: flex;
-      gap: 16px;
-      padding: 0 20px;
-      overflow-x: auto;
-      scroll-snap-type: x mandatory;
-      -webkit-overflow-scrolling: touch;
-      scrollbar-width: none;
-    }
-
-    .profiles::-webkit-scrollbar {
-      display: none;
-    }
-
-    .profile-card {
-      flex: 0 0 280px;
-      scroll-snap-align: center;
-      background: white;
-      border-radius: 24px;
-      overflow: hidden;
-      box-shadow: 0 12px 30px rgba(255, 45, 85, 0.18);
       position: relative;
-      transition: transform 0.3s ease;
+    }
+    .cards-track {
+      display: flex;
+      gap: 14px;
+      padding: 8px 14px 16px;
+      width: max-content;
+      animation: scrollCards 28s linear infinite;
+    }
+    .cards-track:hover {
+      animation-play-state: paused;
+    }
+    @keyframes scrollCards {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
     }
 
-    .profile-card:active {
-      transform: scale(0.98);
+    .card {
+      flex: 0 0 240px;
+      background: white;
+      border-radius: 22px;
+      overflow: hidden;
+      box-shadow: 0 12px 28px rgba(255, 45, 119, 0.18);
+      position: relative;
+      transition: transform 0.25s ease;
     }
+    .card:active { transform: scale(0.96); }
 
-    .profile-img {
+    .card-img-wrap {
       width: 100%;
-      height: 340px;
+      aspect-ratio: 3 / 4;
+      overflow: hidden;
+      position: relative;
+    }
+    .card-img {
+      width: 100%;
+      height: 100%;
       object-fit: cover;
+      object-position: top center;
       display: block;
+      transition: transform 0.4s ease;
+    }
+    .card:hover .card-img {
+      transform: scale(1.06);
     }
 
-    .profile-badges {
+    .card-badges {
       position: absolute;
-      top: 14px;
-      left: 14px;
-      right: 14px;
+      top: 10px;
+      left: 10px;
+      right: 10px;
       display: flex;
       justify-content: space-between;
+      z-index: 2;
     }
-
     .badge {
-      padding: 5px 12px;
+      padding: 4px 10px;
       border-radius: 50px;
-      font-size: 12px;
+      font-size: 11px;
       font-weight: 700;
       color: white;
+      backdrop-filter: blur(4px);
     }
-
-    .badge.verified {
-      background: #3b82f6;
-    }
-
-    .badge.online {
-      background: rgba(34, 197, 94, 0.9);
-    }
-
-    .profile-info {
-      padding: 16px 18px 20px;
-      background: white;
-    }
-
-    .profile-name {
-      font-size: 22px;
-      font-weight: 800;
-      margin-bottom: 4px;
-    }
-
-    .profile-location {
-      font-size: 13px;
-      color: #666;
-      margin-bottom: 12px;
+    .badge-verified { background: rgba(59, 130, 246, 0.92); }
+    .badge-online {
+      background: rgba(34, 197, 94, 0.92);
       display: flex;
       align-items: center;
       gap: 4px;
     }
 
+    .card-info {
+      padding: 12px 14px 16px;
+    }
+    .card-name {
+      font-size: 18px;
+      font-weight: 800;
+      margin-bottom: 3px;
+    }
+    .card-loc {
+      font-size: 12px;
+      color: #888;
+      margin-bottom: 9px;
+      display: flex;
+      align-items: center;
+      gap: 3px;
+    }
     .tags {
       display: flex;
       flex-wrap: wrap;
-      gap: 6px;
+      gap: 5px;
     }
-
     .tag {
-      background: #fff0f5;
-      color: #ff2d55;
-      font-size: 12px;
-      padding: 5px 10px;
+      background: #ffe4ef;
+      color: #ff2d77;
+      padding: 4px 9px;
       border-radius: 50px;
+      font-size: 11px;
       font-weight: 600;
     }
-
     .tag.hot {
-      background: linear-gradient(135deg, #ff2d55, #ff6b9d);
+      background: linear-gradient(90deg, #ff2d77, #ff6b9d);
       color: white;
     }
 
-    /* 统计栏 */
+    /* Stats */
     .stats {
-      margin: 20px 20px;
-      background: linear-gradient(135deg, #ff2d55, #ff6b9d);
-      border-radius: 20px;
-      padding: 18px 10px;
+      background: white;
+      border-radius: 18px;
+      padding: 16px 10px;
       display: flex;
       justify-content: space-around;
-      color: white;
-      box-shadow: 0 8px 25px rgba(255, 45, 85, 0.35);
+      margin-bottom: 22px;
+      box-shadow: 0 6px 20px rgba(255, 45, 119, 0.12);
     }
-
-    .stat-item {
-      text-align: center;
-    }
-
+    .stat { text-align: center; }
     .stat-num {
-      font-size: 22px;
+      font-size: 20px;
       font-weight: 900;
-      display: block;
+      color: #ff2d77;
     }
-
     .stat-label {
-      font-size: 12px;
-      opacity: 0.9;
+      font-size: 11px;
+      color: #777;
       margin-top: 2px;
     }
 
-    /* 功能亮点 */
+    /* Features */
     .features {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 12px;
-      padding: 10px 20px 30px;
+      gap: 10px;
+      margin-bottom: 24px;
     }
-
     .feature {
-      background: rgba(255, 255, 255, 0.7);
-      border-radius: 16px;
-      padding: 16px;
-      text-align: center;
+      background: rgba(255,255,255,0.75);
       backdrop-filter: blur(8px);
+      border-radius: 14px;
+      padding: 14px 10px;
+      text-align: center;
     }
+    .feature-icon { font-size: 22px; margin-bottom: 4px; }
+    .feature-title { font-size: 13px; font-weight: 700; }
+    .feature-desc { font-size: 11px; color: #666; }
 
-    .feature-icon {
-      font-size: 24px;
-      margin-bottom: 6px;
+    /* Nearby */
+    .section-title {
+      font-size: 16px;
+      font-weight: 800;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
     }
-
-    .feature-title {
-      font-size: 14px;
-      font-weight: 700;
-      margin-bottom: 2px;
+    .nearby-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-bottom: 20px;
     }
-
-    .feature-desc {
-      font-size: 12px;
-      color: #666;
+    .nearby-card {
+      background: white;
+      border-radius: 14px;
+      overflow: hidden;
+      box-shadow: 0 4px 14px rgba(0,0,0,0.07);
     }
+    .nearby-img {
+      width: 100%;
+      aspect-ratio: 1 / 1.15;
+      object-fit: cover;
+      object-position: top;
+    }
+    .nearby-info { padding: 9px 10px; }
+    .nearby-name { font-size: 13.5px; font-weight: 700; }
+    .nearby-tag { font-size: 11px; color: #ff2d77; margin-top: 2px; }
 
-    /* 底部固定下载按钮 */
-    .download-bar {
+    /* Fixed CTA */
+    .cta-fixed {
       position: fixed;
       bottom: 0;
       left: 0;
       right: 0;
-      padding: 16px 20px 28px;
-      background: linear-gradient(to top, rgba(255, 240, 245, 0.98), rgba(255, 240, 245, 0.9));
-      backdrop-filter: blur(10px);
-      z-index: 200;
+      background: linear-gradient(to top, rgba(255,214,231,0.98) 60%, rgba(255,214,231,0.85));
+      padding: 14px 14px 26px;
+      z-index: 100;
+      backdrop-filter: blur(12px);
     }
-
-    .download-btn {
+    .cta-btn {
       display: block;
       width: 100%;
-      background: linear-gradient(135deg, #ff2d55 0%, #ff6b9d 100%);
+      max-width: 520px;
+      margin: 0 auto;
+      background: linear-gradient(90deg, #ff2d77, #ff5c9a);
       color: white;
       text-align: center;
-      padding: 18px;
+      padding: 17px;
       border-radius: 50px;
-      font-size: 18px;
+      font-size: 17px;
       font-weight: 800;
       text-decoration: none;
-      box-shadow: 0 10px 30px rgba(255, 45, 85, 0.45);
-      transition: transform 0.2s, box-shadow 0.2s;
-      letter-spacing: 0.5px;
-    }
-
-    .download-btn:active {
-      transform: scale(0.97);
-      box-shadow: 0 6px 20px rgba(255, 45, 85, 0.35);
-    }
-
-    .rating {
-      text-align: center;
-      margin-top: 10px;
-      font-size: 13px;
-      color: #666;
-    }
-
-    .stars {
-      color: #ffb800;
-      letter-spacing: 1px;
-    }
-
-    /* 装饰爱心 */
-    .hearts {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      pointer-events: none;
-      z-index: 0;
+      box-shadow: 0 8px 28px rgba(255, 45, 119, 0.5);
+      animation: btnPulse 2.2s infinite;
+      position: relative;
       overflow: hidden;
     }
-
-    .heart {
+    .cta-btn::after {
+      content: "";
       position: absolute;
-      font-size: 20px;
-      opacity: 0.15;
-      animation: float 12s linear infinite;
+      top: 0;
+      left: -80%;
+      width: 50%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.35), transparent);
+      animation: shine 2.8s infinite;
+    }
+    @keyframes btnPulse {
+      0%, 100% { transform: scale(1); box-shadow: 0 8px 28px rgba(255, 45, 119, 0.5); }
+      50% { transform: scale(1.025); box-shadow: 0 10px 32px rgba(255, 45, 119, 0.6); }
+    }
+    @keyframes shine {
+      0% { left: -80%; }
+      40%, 100% { left: 130%; }
+    }
+    .rating {
+      text-align: center;
+      margin-top: 8px;
+      font-size: 12px;
+      color: #666;
+    }
+    .stars { color: #fbbf24; letter-spacing: 1px; }
+
+    /* ========== 响应式 ========== */
+    @media (min-width: 480px) {
+      .container { padding: 18px 18px 140px; }
+      .hero h1 { font-size: 32px; }
+      .card { flex: 0 0 260px; }
+      .card-img-wrap { aspect-ratio: 3 / 4.1; }
     }
 
-    @keyframes float {
-      0% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
-      10% { opacity: 0.15; }
-      90% { opacity: 0.15; }
-      100% { transform: translateY(-100px) rotate(360deg); opacity: 0; }
+    @media (min-width: 768px) {
+      body { background: linear-gradient(180deg, #ffe6f0 0%, #ffd1e6 100%); }
+      .container { max-width: 680px; padding-bottom: 150px; }
+      .cards-track { gap: 18px; animation-duration: 32s; }
+      .card { flex: 0 0 280px; }
+      .nearby-grid { grid-template-columns: repeat(4, 1fr); }
+      .cta-btn { font-size: 18px; padding: 18px; }
+    }
+
+    @media (min-width: 1024px) {
+      .container { max-width: 780px; }
+      .card { flex: 0 0 300px; }
     }
   </style>
 </head>
 <body>
-  <!-- 装饰爱心 -->
   <div class="hearts" id="hearts"></div>
 
-  <!-- 顶部 -->
-  <header class="header">
-    <div class="logo">
-      <div class="logo-icon">♥</div>
-      Hearto
+  <div class="container">
+    <!-- Header -->
+    <div class="header">
+      <div class="logo">
+        <div class="logo-icon">♥</div>
+        Hearto
+      </div>
+      <div class="online-badge">
+        <span class="dot"></span>
+        13,496 オンライン
+      </div>
     </div>
-    <div class="online-badge">
-      <span class="online-dot"></span>
-      <span id="online-count">13,496</span> オンライン
+
+    <!-- Hero -->
+    <div class="hero">
+      <h1>
+        熱い狐。<br>
+        <span class="pink">本物の出会い。</span><br>
+        今夜。
+      </h1>
+      <p>
+        アプリをダウンロードして、最初の無料プレイを楽しもう。<br>
+        近くの検証済みで超セクシーな女の子が待ってるよ。
+      </p>
     </div>
-  </header>
 
-  <!-- 英雄区 -->
-  <section class="hero">
-    <h1>
-      熱い女の子。<br>
-      <span class="pink">本物の出会い。</span><br>
-      今夜。
-    </h1>
-    <p>
-      アプリをダウンロードして、最初の無料プレイを楽しもう。<br>
-      近くの検証済み女の子が、今夜あなたを待っています。
-    </p>
-  </section>
-
-  <!-- 人物卡片 -->
-  <div class="profiles-wrapper">
-    <div class="profiles">
-      <!-- 卡片1 -->
-      <div class="profile-card">
-        <img class="profile-img" src="https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?w=600&h=800&fit=crop" alt="Anna">
-        <div class="profile-badges">
-          <span class="badge verified">✓ 検証済み</span>
-          <span class="badge online">● オンライン</span>
+    <!-- 自动滚动卡片 -->
+    <div class="cards-section">
+      <div class="cards-track" id="cardsTrack">
+        <!-- 第一组 -->
+        <div class="card">
+          <div class="card-img-wrap">
+            <img class="card-img" src="https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?w=600&q=85" alt="Anna" loading="lazy">
+            <div class="card-badges">
+              <span class="badge badge-verified">✓ 検証済み</span>
+              <span class="badge badge-online"><span class="dot" style="width:6px;height:6px"></span> Online</span>
+            </div>
+          </div>
+          <div class="card-info">
+            <div class="card-name">Anna</div>
+            <div class="card-loc">📍 0.8 km · 渋谷</div>
+            <div class="tags">
+              <span class="tag hot">💦 今すぐしたい</span>
+              <span class="tag">ディープスロート</span>
+            </div>
+          </div>
         </div>
-        <div class="profile-info">
-          <div class="profile-name">Anna</div>
-          <div class="profile-location">📍 0.8 km · 東京</div>
-          <div class="tags">
-            <span class="tag hot">今すぐ会いたい</span>
-            <span class="tag">ディープスロート</span>
-            <span class="tag">アナル好き</span>
+
+        <div class="card">
+          <div class="card-img-wrap">
+            <img class="card-img" src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=600&q=85" alt="Leah" loading="lazy">
+            <div class="card-badges">
+              <span class="badge badge-verified">✓ 検証済み</span>
+              <span class="badge badge-online"><span class="dot" style="width:6px;height:6px"></span> Online</span>
+            </div>
+          </div>
+          <div class="card-info">
+            <div class="card-name">Leah</div>
+            <div class="card-loc">📍 1.2 km · 新宿</div>
+            <div class="tags">
+              <span class="tag hot">⭐ VIP</span>
+              <span class="tag">特別プレイ</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-img-wrap">
+            <img class="card-img" src="https://images.unsplash.com/photo-1517841905240-472988babdf9?w=600&q=85" alt="Maya" loading="lazy">
+            <div class="card-badges">
+              <span class="badge badge-verified">✓ 検証済み</span>
+              <span class="badge badge-online"><span class="dot" style="width:6px;height:6px"></span> Online</span>
+            </div>
+          </div>
+          <div class="card-info">
+            <div class="card-name">Maya</div>
+            <div class="card-loc">📍 1.8 km · 池袋</div>
+            <div class="tags">
+              <span class="tag hot">🔥 熱い</span>
+              <span class="tag">野生</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-img-wrap">
+            <img class="card-img" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=600&q=85" alt="Aisha" loading="lazy">
+            <div class="card-badges">
+              <span class="badge badge-verified">✓ 検証済み</span>
+              <span class="badge badge-online"><span class="dot" style="width:6px;height:6px"></span> Online</span>
+            </div>
+          </div>
+          <div class="card-info">
+            <div class="card-name">Aisha</div>
+            <div class="card-loc">📍 0.5 km · 六本木</div>
+            <div class="tags">
+              <span class="tag hot">👑 上級</span>
+              <span class="tag">騎乗位</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-img-wrap">
+            <img class="card-img" src="https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=600&q=85" alt="Zoya" loading="lazy">
+            <div class="card-badges">
+              <span class="badge badge-verified">✓ 検証済み</span>
+              <span class="badge badge-online"><span class="dot" style="width:6px;height:6px"></span> Online</span>
+            </div>
+          </div>
+          <div class="card-info">
+            <div class="card-name">Zoya</div>
+            <div class="card-loc">📍 2.3 km · 恵比寿</div>
+            <div class="tags">
+              <span class="tag hot">✨ 新人</span>
+              <span class="tag">挑発的</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- 第二组（无缝循环） -->
+        <div class="card">
+          <div class="card-img-wrap">
+            <img class="card-img" src="https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?w=600&q=85" alt="Anna" loading="lazy">
+            <div class="card-badges">
+              <span class="badge badge-verified">✓ 検証済み</span>
+              <span class="badge badge-online"><span class="dot" style="width:6px;height:6px"></span> Online</span>
+            </div>
+          </div>
+          <div class="card-info">
+            <div class="card-name">Anna</div>
+            <div class="card-loc">📍 0.8 km · 渋谷</div>
+            <div class="tags">
+              <span class="tag hot">💦 今すぐしたい</span>
+              <span class="tag">ディープスロート</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-img-wrap">
+            <img class="card-img" src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=600&q=85" alt="Leah" loading="lazy">
+            <div class="card-badges">
+              <span class="badge badge-verified">✓ 検証済み</span>
+              <span class="badge badge-online"><span class="dot" style="width:6px;height:6px"></span> Online</span>
+            </div>
+          </div>
+          <div class="card-info">
+            <div class="card-name">Leah</div>
+            <div class="card-loc">📍 1.2 km · 新宿</div>
+            <div class="tags">
+              <span class="tag hot">⭐ VIP</span>
+              <span class="tag">特別プレイ</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-img-wrap">
+            <img class="card-img" src="https://images.unsplash.com/photo-1517841905240-472988babdf9?w=600&q=85" alt="Maya" loading="lazy">
+            <div class="card-badges">
+              <span class="badge badge-verified">✓ 検証済み</span>
+              <span class="badge badge-online"><span class="dot" style="width:6px;height:6px"></span> Online</span>
+            </div>
+          </div>
+          <div class="card-info">
+            <div class="card-name">Maya</div>
+            <div class="card-loc">📍 1.8 km · 池袋</div>
+            <div class="tags">
+              <span class="tag hot">🔥 熱い</span>
+              <span class="tag">野生</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-img-wrap">
+            <img class="card-img" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=600&q=85" alt="Aisha" loading="lazy">
+            <div class="card-badges">
+              <span class="badge badge-verified">✓ 検証済み</span>
+              <span class="badge badge-online"><span class="dot" style="width:6px;height:6px"></span> Online</span>
+            </div>
+          </div>
+          <div class="card-info">
+            <div class="card-name">Aisha</div>
+            <div class="card-loc">📍 0.5 km · 六本木</div>
+            <div class="tags">
+              <span class="tag hot">👑 上級</span>
+              <span class="tag">騎乗位</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-img-wrap">
+            <img class="card-img" src="https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=600&q=85" alt="Zoya" loading="lazy">
+            <div class="card-badges">
+              <span class="badge badge-verified">✓ 検証済み</span>
+              <span class="badge badge-online"><span class="dot" style="width:6px;height:6px"></span> Online</span>
+            </div>
+          </div>
+          <div class="card-info">
+            <div class="card-name">Zoya</div>
+            <div class="card-loc">📍 2.3 km · 恵比寿</div>
+            <div class="tags">
+              <span class="tag hot">✨ 新人</span>
+              <span class="tag">挑発的</span>
+            </div>
           </div>
         </div>
       </div>
+    </div>
 
-      <!-- 卡片2 -->
-      <div class="profile-card">
-        <img class="profile-img" src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=600&h=800&fit=crop" alt="Yuki">
-        <div class="profile-badges">
-          <span class="badge verified">✓ 検証済み</span>
-          <span class="badge online">● オンライン</span>
-        </div>
-        <div class="profile-info">
-          <div class="profile-name">Yuki</div>
-          <div class="profile-location">📍 1.2 km · 渋谷</div>
-          <div class="tags">
-            <span class="tag hot">今夜空き</span>
-            <span class="tag">口でしてあげる</span>
-            <span class="tag">中出しOK</span>
-          </div>
+    <!-- Stats -->
+    <div class="stats">
+      <div class="stat">
+        <div class="stat-num">100K+</div>
+        <div class="stat-label">検証済みの女の子</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num">3分</div>
+        <div class="stat-label">平均マッチ時間</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num">100%</div>
+        <div class="stat-label">無料で始められる</div>
+      </div>
+    </div>
+
+    <!-- Features -->
+    <div class="features">
+      <div class="feature">
+        <div class="feature-icon">💬</div>
+        <div class="feature-title">即チャット</div>
+        <div class="feature-desc">数秒で返信</div>
+      </div>
+      <div class="feature">
+        <div class="feature-icon">📍</div>
+        <div class="feature-title">近くの出会い</div>
+        <div class="feature-desc">1km以内</div>
+      </div>
+      <div class="feature">
+        <div class="feature-icon">🔒</div>
+        <div class="feature-title">100%安全</div>
+        <div class="feature-desc">すべて検証済み</div>
+      </div>
+      <div class="feature">
+        <div class="feature-icon">💗</div>
+        <div class="feature-title">初回無料</div>
+        <div class="feature-desc">今すぐプレイ</div>
+      </div>
+    </div>
+
+    <!-- Nearby -->
+    <div class="section-title">💗 近くのセクシーな女の子</div>
+    <div class="nearby-grid">
+      <div class="nearby-card">
+        <img class="nearby-img" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400&q=80" alt="Aisha" loading="lazy">
+        <div class="nearby-info">
+          <div class="nearby-name">Aisha ⭐ VIP</div>
+          <div class="nearby-tag">ペリトクリーム</div>
         </div>
       </div>
-
-      <!-- カード3 -->
-      <div class="profile-card">
-        <img class="profile-img" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=600&h=800&fit=crop" alt="Hana">
-        <div class="profile-badges">
-          <span class="badge verified">✓ 検証済み</span>
-          <span class="badge online">● オンライン</span>
-        </div>
-        <div class="profile-info">
-          <div class="profile-name">Hana</div>
-          <div class="profile-location">📍 2.1 km · 新宿</div>
-          <div class="tags">
-            <span class="tag hot">即会い希望</span>
-            <span class="tag">騎乗位好き</span>
-            <span class="tag">乳射歓迎</span>
-          </div>
+      <div class="nearby-card">
+        <img class="nearby-img" src="https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=400&q=80" alt="Neha" loading="lazy">
+        <div class="nearby-info">
+          <div class="nearby-name">Neha 🔥 熱い</div>
+          <div class="nearby-tag">ママみたいに優しく</div>
         </div>
       </div>
-
-      <!-- カード4 -->
-      <div class="profile-card">
-        <img class="profile-img" src="https://images.unsplash.com/photo-1517841905240-472988babdf9?w=600&h=800&fit=crop" alt="Mei">
-        <div class="profile-badges">
-          <span class="badge verified">✓ 検証済み</span>
-          <span class="badge online">● オンライン</span>
-        </div>
-        <div class="profile-info">
-          <div class="profile-name">Mei</div>
-          <div class="profile-location">📍 0.5 km · 六本木</div>
-          <div class="tags">
-            <span class="tag hot">今からOK</span>
-            <span class="tag">フェラ上手</span>
-            <span class="tag">複数プレイ可</span>
-          </div>
+      <div class="nearby-card">
+        <img class="nearby-img" src="https://images.unsplash.com/photo-1488426862026-3ee34a7d66df?w=400&q=80" alt="Zoya" loading="lazy">
+        <div class="nearby-info">
+          <div class="nearby-name">Zoya ✨ 新人</div>
+          <div class="nearby-tag">挑発的なミルク狐</div>
         </div>
       </div>
-
-      <!-- カード5 -->
-      <div class="profile-card">
-        <img class="profile-img" src="https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=600&h=800&fit=crop" alt="Rina">
-        <div class="profile-badges">
-          <span class="badge verified">✓ 検証済み</span>
-          <span class="badge online">● オンライン</span>
-        </div>
-        <div class="profile-info">
-          <div class="profile-name">Rina</div>
-          <div class="profile-location">📍 1.8 km · 池袋</div>
-          <div class="tags">
-            <span class="tag hot">今夜だけ</span>
-            <span class="tag">バック好き</span>
-            <span class="tag">顔射希望</span>
-          </div>
+      <div class="nearby-card">
+        <img class="nearby-img" src="https://images.unsplash.com/photo-1502823403499-6ccfcf4fb453?w=400&q=80" alt="Kava" loading="lazy">
+        <div class="nearby-info">
+          <div class="nearby-name">Kava 👑 上級</div>
+          <div class="nearby-tag">騎乗位得意</div>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- 统计 -->
-  <div class="stats">
-    <div class="stat-item">
-      <span class="stat-num">100K+</span>
-      <span class="stat-label">検証済み女性</span>
-    </div>
-    <div class="stat-item">
-      <span class="stat-num">3分</span>
-      <span class="stat-label">平均マッチ時間</span>
-    </div>
-    <div class="stat-item">
-      <span class="stat-num">100%</span>
-      <span class="stat-label">無料で開始</span>
-    </div>
-  </div>
-
-  <!-- 功能亮点 -->
-  <div class="features">
-    <div class="feature">
-      <div class="feature-icon">💬</div>
-      <div class="feature-title">即チャット</div>
-      <div class="feature-desc">数秒で返信</div>
-    </div>
-    <div class="feature">
-      <div class="feature-icon">📍</div>
-      <div class="feature-title">近くの女の子</div>
-      <div class="feature-desc">1km以内</div>
-    </div>
-    <div class="feature">
-      <div class="feature-icon">🔒</div>
-      <div class="feature-title">100%安全</div>
-      <div class="feature-desc">全検証済み</div>
-    </div>
-    <div class="feature">
-      <div class="feature-icon">🔥</div>
-      <div class="feature-title">今夜会える</div>
-      <div class="feature-desc">リアルタイム</div>
-    </div>
-  </div>
-
-  <!-- 底部下载按钮 -->
-  <div class="download-bar">
-    <a href="https://d1bi3o2pwkkxw0.cloudfront.net/bx/pornhub" class="download-btn" target="_blank" rel="noopener">
-      ♥ 無料ダウンロード — 最初の無料プレイ
+  <!-- Fixed CTA -->
+  <div class="cta-fixed">
+    <a href="https://d1bi3o2pwkkxw0.cloudfront.net/bx/pornhub" class="cta-btn" target="_blank" rel="noopener">
+      ♥ 無料ダウンロード – 初回無料プレイ
     </a>
     <div class="rating">
-      <span class="stars">★★★★★</span> 4.8 · 500万+ ダウンロード
+      <span class="stars">★★★★★</span> 4.8評価 · 500万+ ダウンロード
     </div>
   </div>
 
   <script>
-    // 在线人数轻微跳动
-    setInterval(() => {
-      const el = document.getElementById('online-count');
-      let num = parseInt(el.textContent.replace(/,/g, ''));
-      num += Math.floor(Math.random() * 5) - 2;
-      if (num < 13000) num = 13496;
-      el.textContent = num.toLocaleString();
-    }, 4000);
-
-    // 生成飘浮爱心
+    // 浮动爱心
     const heartsContainer = document.getElementById('hearts');
-    for (let i = 0; i < 12; i++) {
+    for (let i = 0; i < 16; i++) {
       const heart = document.createElement('div');
       heart.className = 'heart';
-      heart.textContent = '♥';
-      heart.style.left = Math.random() * 100 + '%';
-      heart.style.animationDelay = Math.random() * 12 + 's';
-      heart.style.fontSize = (14 + Math.random() * 16) + 'px';
+      heart.innerHTML = '♥';
+      heart.style.left = Math.random() * 100 + 'vw';
+      heart.style.fontSize = (12 + Math.random() * 18) + 'px';
+      heart.style.animationDuration = (9 + Math.random() * 11) + 's';
+      heart.style.animationDelay = Math.random() * 9 + 's';
       heartsContainer.appendChild(heart);
     }
   </script>
